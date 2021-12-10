@@ -176,7 +176,13 @@ public class JamesApp extends javax.swing.JFrame {
         jLabel10.setText("Usuarios Conectados");
 
         jButton4.setText("Chat");
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton4MouseClicked(evt);
+            }
+        });
 
+        jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
@@ -184,6 +190,11 @@ public class JamesApp extends javax.swing.JFrame {
         jButton5.setText("Enviar");
 
         jButton6.setText("Terminar");
+        jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton6MouseClicked(evt);
+            }
+        });
 
         jLabel11.setText("Nombre");
 
@@ -399,6 +410,11 @@ public class JamesApp extends javax.swing.JFrame {
         jButton7.setText("Enviar");
 
         jButton8.setText("Terminar");
+        jButton8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton8MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jFrame_ClienteLayout = new javax.swing.GroupLayout(jFrame_Cliente.getContentPane());
         jFrame_Cliente.getContentPane().setLayout(jFrame_ClienteLayout);
@@ -743,6 +759,31 @@ public class JamesApp extends javax.swing.JFrame {
         db.desconectar();
 
     }//GEN-LAST:event_jButton10MouseClicked
+
+    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
+        DefaultComboBoxModel modelo = (DefaultComboBoxModel) jComboBox1.getModel();
+        String usuario = ((Usuarios)(modelo.getSelectedItem())).getUsuario();
+        String nombre = ((Usuarios)(modelo.getSelectedItem())).getNombre();
+        int edad = ((Usuarios)(modelo.getSelectedItem())).getEdad();
+        String contra = ((Usuarios)(modelo.getSelectedItem())).getContraseña();
+        
+        jTextField9.setText(nombre);
+        jTextField10.setText(usuario);
+        jTextField8.setText(String.valueOf(edad));
+        jTextField11.setText(contra);
+        
+        jTextArea2.append(usuario);
+    }//GEN-LAST:event_jButton4MouseClicked
+
+    private void jButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseClicked
+        JOptionPane.showMessageDialog(this, "Chat Finalizado");
+        jTextArea2.setText("");
+    }//GEN-LAST:event_jButton8MouseClicked
+
+    private void jButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseClicked
+        JOptionPane.showMessageDialog(this, "Chat Finalizado");
+        jTextArea2.setText("");
+    }//GEN-LAST:event_jButton6MouseClicked
 
     /**
      * @param args the command line arguments
