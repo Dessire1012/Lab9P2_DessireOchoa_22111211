@@ -3,6 +3,7 @@ package Chat;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -588,6 +589,12 @@ public class JamesApp extends javax.swing.JFrame {
                     jFrame_Cliente.pack();
                     jFrame_Cliente.setLocationRelativeTo(this);
                     jFrame_Cliente.setVisible(true);
+
+                    DefaultComboBoxModel modelo
+                            = (DefaultComboBoxModel) jComboBox1.getModel();
+                    modelo.removeAllElements();
+                    
+                    modelo.addElement(user);
                 }
 
                 if (user.getTipo().equals("Personal")) {
@@ -713,7 +720,7 @@ public class JamesApp extends javax.swing.JFrame {
                     + "'" + nombre + "',Contraseña='" + contraseña + "',Edad=" + edad + ","
                     + "Tipo='" + tipo + "' where Usuario='" + usuario + "'");
             db.commit();
-            
+
             modelo.setRowCount(0);
             db.conectar();
             try {
@@ -726,14 +733,13 @@ public class JamesApp extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-            
+
             JOptionPane.showMessageDialog(this, "Usuario Editado");
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         db.desconectar();
 
-        
         db.desconectar();
 
     }//GEN-LAST:event_jButton10MouseClicked
