@@ -14,6 +14,9 @@ public class JamesApp extends javax.swing.JFrame {
      */
     public JamesApp() {
         initComponents();
+        Usuarios adminChat = null;
+        Usuarios clienteChat = null;
+
         db.conectar();
         try {
             db.query.execute("select Usuario,Nombre,Contraseña,Edad,Tipo from Usuarios");
@@ -530,6 +533,7 @@ public class JamesApp extends javax.swing.JFrame {
         String contraseña = jTextField4.getText();
         int edad = Integer.parseInt(jTextField6.getText());
         String tipo = "Cliente";
+        clienteChat = new Usuarios(usuario, nombre, contraseña, edad, tipo);
 
         for (Usuarios user : users) {
             if (!user.getUsuario().equals(usuario)) {
@@ -609,14 +613,18 @@ public class JamesApp extends javax.swing.JFrame {
                     DefaultComboBoxModel modelo
                             = (DefaultComboBoxModel) jComboBox1.getModel();
                     modelo.removeAllElements();
-                    
+
                     modelo.addElement(user);
+                    
+                    clienteChat = user;
                 }
 
                 if (user.getTipo().equals("Personal")) {
                     jFrame_Personal.pack();
                     jFrame_Personal.setLocationRelativeTo(this);
                     jFrame_Personal.setVisible(true);
+                    
+                    personalChat = user;
                 }
             }
         }
@@ -662,7 +670,7 @@ public class JamesApp extends javax.swing.JFrame {
                     try {
                         db.query.execute("delete from Usuarios where Usuario='" + usuario + "'");
                         db.commit();
-                        JOptionPane.showMessageDialog(this, "Usuario Eliminado");
+                        JOptionPane.showMessageDialog(jFrame_Admin, "Usuario Eliminado");
                         jTextField13.setText("");
                         jTextField14.setText("");
                         jTextField15.setText("");
@@ -709,7 +717,7 @@ public class JamesApp extends javax.swing.JFrame {
                 db.commit();
                 Object[] newrow = {usuario, nombre, contraseña, edad, tipo};
                 modelo.addRow(newrow);
-                JOptionPane.showMessageDialog(this, "Usuario Creado");
+                JOptionPane.showMessageDialog(jFrame_Admin, "Usuario Creado");
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -736,8 +744,12 @@ public class JamesApp extends javax.swing.JFrame {
                     + "'" + nombre + "',Contraseña='" + contraseña + "',Edad=" + edad + ","
                     + "Tipo='" + tipo + "' where Usuario='" + usuario + "'");
             db.commit();
-
-            modelo.setRowCount(0);
+            JOptionPane.showMessageDialog(jFrame_Admin, "Usuario Editado");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        db.desconectar();
+         modelo.setRowCount(0);
             db.conectar();
             try {
                 db.query.execute("select Usuario,Nombre,Contraseña,Edad,Tipo from Usuarios");
@@ -749,40 +761,38 @@ public class JamesApp extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-
-            JOptionPane.showMessageDialog(this, "Usuario Editado");
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        db.desconectar();
-
         db.desconectar();
 
     }//GEN-LAST:event_jButton10MouseClicked
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
         DefaultComboBoxModel modelo = (DefaultComboBoxModel) jComboBox1.getModel();
-        String usuario = ((Usuarios)(modelo.getSelectedItem())).getUsuario();
-        String nombre = ((Usuarios)(modelo.getSelectedItem())).getNombre();
-        int edad = ((Usuarios)(modelo.getSelectedItem())).getEdad();
-        String contra = ((Usuarios)(modelo.getSelectedItem())).getContraseña();
-        
+        String usuario = ((Usuarios) (modelo.getSelectedItem())).getUsuario();
+        String nombre = ((Usuarios) (modelo.getSelectedItem())).getNombre();
+        int edad = ((Usuarios) (modelo.getSelectedItem())).getEdad();
+        String contra = ((Usuarios) (modelo.getSelectedItem())).getContraseña();
+
         jTextField9.setText(nombre);
         jTextField10.setText(usuario);
         jTextField8.setText(String.valueOf(edad));
         jTextField11.setText(contra);
         
-        jTextArea2.append(usuario);
+
+        jTextArea2.append(personalChat.getUsuario()+" ha ingreado al chat");
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void jButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseClicked
-        JOptionPane.showMessageDialog(this, "Chat Finalizado");
+        JOptionPane.showMessageDialog(jFrame_Cliente, "Chat Finalizado");
         jTextArea2.setText("");
     }//GEN-LAST:event_jButton8MouseClicked
 
     private void jButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseClicked
-        JOptionPane.showMessageDialog(this, "Chat Finalizado");
-        jTextArea2.setText("");
+        JOptionPane.showMessageDialog(jFrame_Personal, "Chat Finalizado");
+        jTextArea1.setText("");
+        jTextField9.setText("");
+        jTextField10.setText("");
+        jTextField8.setText(String.valueOf(""));
+        jTextField11.setText("");
     }//GEN-LAST:event_jButton6MouseClicked
 
     /**
@@ -882,6 +892,8 @@ public class JamesApp extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
-Dba db = new Dba("./User.accdb");
+    Dba db = new Dba("./User.accdb");
     ArrayList<Usuarios> users = new ArrayList();
+    Usuarios personalChat;
+    Usuarios clienteChat;
 }
