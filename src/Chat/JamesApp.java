@@ -1,5 +1,9 @@
-
 package Chat;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class JamesApp extends javax.swing.JFrame {
 
@@ -8,6 +12,18 @@ public class JamesApp extends javax.swing.JFrame {
      */
     public JamesApp() {
         initComponents();
+        db.conectar();
+        try {
+            db.query.execute("select Usuario,Nombre,Contraseña,Edad,Tipo from Usuarios");
+            ResultSet rs = db.query.getResultSet();
+            while (rs.next()) {
+                users.add(new Usuarios(rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5)));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        db.desconectar();
+
     }
 
     /**
@@ -25,7 +41,7 @@ public class JamesApp extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        jButton_Registrar = new javax.swing.JButton();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
@@ -91,20 +107,17 @@ public class JamesApp extends javax.swing.JFrame {
 
         jLabel8.setText("Nombre:");
 
-        jButton3.setText("Registrar");
+        jButton_Registrar.setText("Registrar");
+        jButton_Registrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton_RegistrarMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jFrame_RegistroLayout = new javax.swing.GroupLayout(jFrame_Registro.getContentPane());
         jFrame_Registro.getContentPane().setLayout(jFrame_RegistroLayout);
         jFrame_RegistroLayout.setHorizontalGroup(
             jFrame_RegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jFrame_RegistroLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                .addGap(207, 207, 207))
-            .addGroup(jFrame_RegistroLayout.createSequentialGroup()
-                .addGap(186, 186, 186)
-                .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jFrame_RegistroLayout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addGroup(jFrame_RegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,6 +132,15 @@ public class JamesApp extends javax.swing.JFrame {
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(48, 48, 48))
+            .addGroup(jFrame_RegistroLayout.createSequentialGroup()
+                .addGroup(jFrame_RegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jFrame_RegistroLayout.createSequentialGroup()
+                        .addGap(186, 186, 186)
+                        .addComponent(jLabel4))
+                    .addGroup(jFrame_RegistroLayout.createSequentialGroup()
+                        .addGap(204, 204, 204)
+                        .addComponent(jButton_Registrar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jFrame_RegistroLayout.setVerticalGroup(
             jFrame_RegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,7 +164,7 @@ public class JamesApp extends javax.swing.JFrame {
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                .addComponent(jButton3)
+                .addComponent(jButton_Registrar)
                 .addGap(36, 36, 36))
         );
 
@@ -260,11 +282,6 @@ public class JamesApp extends javax.swing.JFrame {
         jButton9.setText("Guardar");
 
         jButton10.setText("Editar");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
-            }
-        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -406,6 +423,11 @@ public class JamesApp extends javax.swing.JFrame {
         jButton1.setText("Aceptar");
 
         jButton2.setText("Registrarme");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -454,9 +476,43 @@ public class JamesApp extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton10ActionPerformed
+    private void jButton_RegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_RegistrarMouseClicked
+        // REGISTRO
+        boolean registro = false;
+        String usuario = jTextField3.getText();
+        String nombre = jTextField5.getText();
+        String contraseña = jTextField4.getText();
+        int edad = Integer.parseInt(jTextField6.getText());
+        String tipo = "Cliente";
+
+        for (Usuarios user : users) {
+            if (!user.getUsuario().equals(usuario)) {
+                db.conectar();
+                try {
+                    db.query.execute("INSERT INTO Usuarios"
+                            + " (Usuario,Nombre,Contraseña,Edad,Tipo)"
+                            + " VALUES ('" + usuario + "', '" + nombre + "', '" + contraseña + "', '" + edad + "', '" + tipo + "')");
+                    db.commit();
+                    JOptionPane.showMessageDialog(this, "Usuario Registrado");
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+                db.desconectar();
+                registro = true;
+            }
+        }
+
+        if (registro == false) {
+            JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya esta en uso");
+        } 
+
+    }//GEN-LAST:event_jButton_RegistrarMouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        jFrame_Registro.pack();
+        jFrame_Registro.setLocationRelativeTo(this);
+        jFrame_Registro.setVisible(true);
+    }//GEN-LAST:event_jButton2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -498,13 +554,13 @@ public class JamesApp extends javax.swing.JFrame {
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JButton jButton_Registrar;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JFrame jFrame_Admin;
     private javax.swing.JFrame jFrame_Cliente;
@@ -555,4 +611,6 @@ public class JamesApp extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     // End of variables declaration//GEN-END:variables
+Dba db = new Dba("./User.accdb");
+    ArrayList<Usuarios> users = new ArrayList();
 }
