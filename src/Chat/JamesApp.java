@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class JamesApp extends javax.swing.JFrame {
 
@@ -75,12 +76,12 @@ public class JamesApp extends javax.swing.JFrame {
         jTextField14 = new javax.swing.JTextField();
         jTextField15 = new javax.swing.JTextField();
         jTextField16 = new javax.swing.JTextField();
-        jTextField17 = new javax.swing.JTextField();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton11 = new javax.swing.JButton();
+        jComboBox3 = new javax.swing.JComboBox<>();
         jFrame_Cliente = new javax.swing.JFrame();
         jLabel15 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -280,6 +281,11 @@ public class JamesApp extends javax.swing.JFrame {
         jLabel21.setText("Tipo");
 
         jButton9.setText("Guardar");
+        jButton9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton9MouseClicked(evt);
+            }
+        });
 
         jButton10.setText("Editar");
 
@@ -294,9 +300,21 @@ public class JamesApp extends javax.swing.JFrame {
                 "Usuario", "Nombre", "Contraseña", "Edad", "Tipo"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(jTable1);
 
         jButton11.setText("Eliminar");
+        jButton11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton11MouseClicked(evt);
+            }
+        });
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cliente", "Personal" }));
 
         javax.swing.GroupLayout jFrame_AdminLayout = new javax.swing.GroupLayout(jFrame_Admin.getContentPane());
         jFrame_Admin.getContentPane().setLayout(jFrame_AdminLayout);
@@ -305,9 +323,11 @@ public class JamesApp extends javax.swing.JFrame {
             .addGroup(jFrame_AdminLayout.createSequentialGroup()
                 .addGroup(jFrame_AdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jFrame_AdminLayout.createSequentialGroup()
+                        .addGap(186, 186, 186)
+                        .addComponent(jLabel16))
+                    .addGroup(jFrame_AdminLayout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addGroup(jFrame_AdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField17, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
                             .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
                             .addComponent(jLabel21)
                             .addComponent(jLabel20)
@@ -319,13 +339,11 @@ public class JamesApp extends javax.swing.JFrame {
                             .addComponent(jTextField13)
                             .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(30, 30, 30)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jFrame_AdminLayout.createSequentialGroup()
-                        .addGap(186, 186, 186)
-                        .addComponent(jLabel16)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                            .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(31, 31, 31)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         jFrame_AdminLayout.setVerticalGroup(
             jFrame_AdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -333,7 +351,7 @@ public class JamesApp extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(jLabel16)
                 .addGap(33, 33, 33)
-                .addGroup(jFrame_AdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jFrame_AdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jFrame_AdminLayout.createSequentialGroup()
                         .addComponent(jLabel17)
                         .addGap(3, 3, 3)
@@ -353,15 +371,15 @@ public class JamesApp extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel21)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton9)
                         .addGap(13, 13, 13)
                         .addComponent(jButton10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(14, 14, 14)
                         .addComponent(jButton11))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -421,6 +439,11 @@ public class JamesApp extends javax.swing.JFrame {
         jLabel3.setText("Contraseña");
 
         jButton1.setText("Aceptar");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         jButton2.setText("Registrarme");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -487,24 +510,25 @@ public class JamesApp extends javax.swing.JFrame {
 
         for (Usuarios user : users) {
             if (!user.getUsuario().equals(usuario)) {
-                db.conectar();
-                try {
-                    db.query.execute("INSERT INTO Usuarios"
-                            + " (Usuario,Nombre,Contraseña,Edad,Tipo)"
-                            + " VALUES ('" + usuario + "', '" + nombre + "', '" + contraseña + "', '" + edad + "', '" + tipo + "')");
-                    db.commit();
-                    JOptionPane.showMessageDialog(this, "Usuario Registrado");
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-                db.desconectar();
                 registro = true;
             }
         }
 
         if (registro == false) {
             JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya esta en uso");
-        } 
+        } else {
+            db.conectar();
+            try {
+                db.query.execute("INSERT INTO Usuarios"
+                        + " (Usuario,Nombre,Contraseña,Edad,Tipo)"
+                        + " VALUES ('" + usuario + "', '" + nombre + "', '" + contraseña + "', '" + edad + "', '" + tipo + "')");
+                db.commit();
+                JOptionPane.showMessageDialog(this, "Usuario Registrado");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            db.desconectar();
+        }
 
     }//GEN-LAST:event_jButton_RegistrarMouseClicked
 
@@ -513,6 +537,145 @@ public class JamesApp extends javax.swing.JFrame {
         jFrame_Registro.setLocationRelativeTo(this);
         jFrame_Registro.setVisible(true);
     }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        //LOGIN
+        boolean login = false;
+        String usuario = jTextField1.getText();
+        String contraseña = jTextField2.getText();
+
+        for (Usuarios user : users) {
+            if (user.getUsuario().equals(usuario) && user.getContraseña().equals(contraseña)) {
+                JOptionPane.showMessageDialog(this, "Bienvenido " + usuario);
+                login = true;
+                jTextField1.setText("");
+                jTextField2.setText("");
+
+                if (user.getTipo().equals("Admin")) {
+                    DefaultTableModel tablaM = (DefaultTableModel) jTable1.getModel();
+                    tablaM.setRowCount(0);
+
+                    db.conectar();
+                    try {
+                        db.query.execute("select Usuario,Nombre,Contraseña,Edad,Tipo from Usuarios");
+                        ResultSet rs = db.query.getResultSet();
+                        while (rs.next()) {
+                            Object[] newrow = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5)};
+                            tablaM.addRow(newrow);
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                    db.desconectar();
+
+                    jFrame_Admin.pack();
+                    jFrame_Admin.setLocationRelativeTo(this);
+                    jFrame_Admin.setVisible(true);
+                }
+
+                if (user.getTipo().equals("Cliente")) {
+                    jFrame_Cliente.pack();
+                    jFrame_Cliente.setLocationRelativeTo(this);
+                    jFrame_Cliente.setVisible(true);
+                }
+
+                if (user.getTipo().equals("Personal")) {
+                    jFrame_Personal.pack();
+                    jFrame_Personal.setLocationRelativeTo(this);
+                    jFrame_Personal.setVisible(true);
+                }
+            }
+        }
+
+        if (login == false) {
+            JOptionPane.showMessageDialog(this, "Usuario no encontrado");
+        }
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // AGREGAR DATOS A LA TABLA
+        
+        if (jTable1.getSelectedRow() >= 0) {
+            DefaultTableModel modelo
+                    = (DefaultTableModel) jTable1.getModel();
+
+            String usuario = (String) (jTable1.getValueAt(jTable1.getSelectedRow(), 0));
+            String nombre = (String) (jTable1.getValueAt(jTable1.getSelectedRow(), 1));
+            String contraseña = (String) (jTable1.getValueAt(jTable1.getSelectedRow(), 2));
+            int edad = (int) (jTable1.getValueAt(jTable1.getSelectedRow(), 3));
+            String tipo = (String) (jTable1.getValueAt(jTable1.getSelectedRow(), 4));
+
+            jTextField13.setText(usuario);
+            jTextField14.setText(nombre);
+            jTextField16.setText(contraseña);
+            jTextField15.setText(String.valueOf(edad));
+
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton11MouseClicked
+        //ELIMINAR USUARIO
+        
+        if (jTable1.getSelectedRow() >= 0) {
+            DefaultTableModel modelo
+                    = (DefaultTableModel) jTable1.getModel();
+
+            String usuario = (String) (jTable1.getValueAt(jTable1.getSelectedRow(), 0));
+
+            for (Usuarios user : users) {
+                if (user.getUsuario().equals(usuario)) {
+                    db.conectar();
+                    try {
+                        db.query.execute("delete from Usuarios where Usuario='" + usuario + "'");
+                        db.commit();
+                        JOptionPane.showMessageDialog(this, "Usuario Eliminado");
+                        jTextField13.setText("");
+                        jTextField14.setText("");
+                        jTextField16.setText("");
+                        jTextField15.setText(String.valueOf(""));
+
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+
+            modelo.removeRow(jTable1.getSelectedRow());
+            jTable1.setModel(modelo);
+
+        }
+    }//GEN-LAST:event_jButton11MouseClicked
+
+    private void jButton9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseClicked
+        boolean registro = false;
+        String usuario = jTextField3.getText();
+        String nombre = jTextField5.getText();
+        String contraseña = jTextField4.getText();
+        int edad = Integer.parseInt(jTextField6.getText());
+        String tipo = "Cliente";
+
+        for (Usuarios user : users) {
+            if (!user.getUsuario().equals(usuario)) {
+                registro = true;
+            }
+        }
+
+        if (registro == false) {
+            JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya esta en uso");
+        } else {
+            db.conectar();
+            try {
+                db.query.execute("INSERT INTO Usuarios"
+                        + " (Usuario,Nombre,Contraseña,Edad,Tipo)"
+                        + " VALUES ('" + usuario + "', '" + nombre + "', '" + contraseña + "', '" + edad + "', '" + tipo + "')");
+                db.commit();
+                JOptionPane.showMessageDialog(this, "Usuario Registrado");
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            db.desconectar();
+        }
+    }//GEN-LAST:event_jButton9MouseClicked
 
     /**
      * @param args the command line arguments
@@ -562,6 +725,7 @@ public class JamesApp extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JButton jButton_Registrar;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JFrame jFrame_Admin;
     private javax.swing.JFrame jFrame_Cliente;
     private javax.swing.JFrame jFrame_Personal;
@@ -601,7 +765,6 @@ public class JamesApp extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField14;
     private javax.swing.JTextField jTextField15;
     private javax.swing.JTextField jTextField16;
-    private javax.swing.JTextField jTextField17;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
