@@ -288,6 +288,11 @@ public class JamesApp extends javax.swing.JFrame {
         });
 
         jButton10.setText("Editar");
+        jButton10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton10MouseClicked(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -385,6 +390,7 @@ public class JamesApp extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel15.setText("Soporte de Cliente");
 
+        jTextArea2.setEditable(false);
         jTextArea2.setColumns(20);
         jTextArea2.setRows(5);
         jScrollPane2.setViewportView(jTextArea2);
@@ -537,6 +543,7 @@ public class JamesApp extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_RegistrarMouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        //ABRIR FRAME REGISTRO
         jFrame_Registro.pack();
         jFrame_Registro.setLocationRelativeTo(this);
         jFrame_Registro.setVisible(true);
@@ -688,6 +695,48 @@ public class JamesApp extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jButton9MouseClicked
+
+    private void jButton10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton10MouseClicked
+        //EDITAR USUARIO
+        DefaultTableModel modelo
+                = (DefaultTableModel) jTable1.getModel();
+        boolean creado = false;
+        String usuario = jTextField13.getText();
+        String nombre = jTextField14.getText();
+        String contraseña = jTextField15.getText();
+        int edad = Integer.parseInt(jTextField16.getText());
+        String tipo = jComboBox3.getSelectedItem().toString();
+
+        db.conectar();
+        try {
+            db.query.execute("update Usuarios set Usuario='" + usuario + "',Nombre="
+                    + "'" + nombre + "',Contraseña='" + contraseña + "',Edad=" + edad + ","
+                    + "Tipo='" + tipo + "' where Usuario='" + usuario + "'");
+            db.commit();
+            
+            modelo.setRowCount(0);
+            db.conectar();
+            try {
+                db.query.execute("select Usuario,Nombre,Contraseña,Edad,Tipo from Usuarios");
+                ResultSet rs = db.query.getResultSet();
+                while (rs.next()) {
+                    Object[] newrow = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5)};
+                    modelo.addRow(newrow);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            
+            JOptionPane.showMessageDialog(this, "Usuario Editado");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        db.desconectar();
+
+        
+        db.desconectar();
+
+    }//GEN-LAST:event_jButton10MouseClicked
 
     /**
      * @param args the command line arguments
