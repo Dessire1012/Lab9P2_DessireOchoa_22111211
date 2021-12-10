@@ -74,8 +74,8 @@ public class JamesApp extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         jTextField13 = new javax.swing.JTextField();
         jTextField14 = new javax.swing.JTextField();
-        jTextField15 = new javax.swing.JTextField();
         jTextField16 = new javax.swing.JTextField();
+        jTextField15 = new javax.swing.JTextField();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -328,10 +328,10 @@ public class JamesApp extends javax.swing.JFrame {
                     .addGroup(jFrame_AdminLayout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addGroup(jFrame_AdminLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                            .addComponent(jTextField16, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
                             .addComponent(jLabel21)
                             .addComponent(jLabel20)
-                            .addComponent(jTextField16, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                            .addComponent(jTextField15, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
                             .addComponent(jTextField14, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
                             .addComponent(jLabel19)
                             .addComponent(jLabel18)
@@ -363,11 +363,11 @@ public class JamesApp extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel19)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(13, 13, 13)
                         .addComponent(jLabel20)
                         .addGap(5, 5, 5)
-                        .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel21)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -530,6 +530,10 @@ public class JamesApp extends javax.swing.JFrame {
             db.desconectar();
         }
 
+        jFrame_Cliente.pack();
+        jFrame_Cliente.setLocationRelativeTo(this);
+        jFrame_Cliente.setVisible(true);
+
     }//GEN-LAST:event_jButton_RegistrarMouseClicked
 
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
@@ -593,8 +597,8 @@ public class JamesApp extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        // AGREGAR DATOS A LA TABLA
-        
+        //PASAR DATOS DE LA TABLA
+
         if (jTable1.getSelectedRow() >= 0) {
             DefaultTableModel modelo
                     = (DefaultTableModel) jTable1.getModel();
@@ -607,15 +611,15 @@ public class JamesApp extends javax.swing.JFrame {
 
             jTextField13.setText(usuario);
             jTextField14.setText(nombre);
-            jTextField16.setText(contraseña);
-            jTextField15.setText(String.valueOf(edad));
+            jTextField15.setText(contraseña);
+            jTextField16.setText(String.valueOf(edad));
 
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton11MouseClicked
         //ELIMINAR USUARIO
-        
+
         if (jTable1.getSelectedRow() >= 0) {
             DefaultTableModel modelo
                     = (DefaultTableModel) jTable1.getModel();
@@ -631,8 +635,8 @@ public class JamesApp extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this, "Usuario Eliminado");
                         jTextField13.setText("");
                         jTextField14.setText("");
-                        jTextField16.setText("");
-                        jTextField15.setText(String.valueOf(""));
+                        jTextField15.setText("");
+                        jTextField16.setText(String.valueOf(""));
 
                     } catch (SQLException ex) {
                         ex.printStackTrace();
@@ -647,20 +651,24 @@ public class JamesApp extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton11MouseClicked
 
     private void jButton9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseClicked
-        boolean registro = false;
-        String usuario = jTextField3.getText();
-        String nombre = jTextField5.getText();
-        String contraseña = jTextField4.getText();
-        int edad = Integer.parseInt(jTextField6.getText());
-        String tipo = "Cliente";
+        //GUARDAR USUARIO
+
+        DefaultTableModel modelo
+                = (DefaultTableModel) jTable1.getModel();
+        boolean creado = false;
+        String usuario = jTextField13.getText();
+        String nombre = jTextField14.getText();
+        String contraseña = jTextField15.getText();
+        int edad = Integer.parseInt(jTextField16.getText());
+        String tipo = jComboBox3.getSelectedItem().toString();
 
         for (Usuarios user : users) {
             if (!user.getUsuario().equals(usuario)) {
-                registro = true;
+                creado = true;
             }
         }
 
-        if (registro == false) {
+        if (creado == false) {
             JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya esta en uso");
         } else {
             db.conectar();
@@ -669,12 +677,16 @@ public class JamesApp extends javax.swing.JFrame {
                         + " (Usuario,Nombre,Contraseña,Edad,Tipo)"
                         + " VALUES ('" + usuario + "', '" + nombre + "', '" + contraseña + "', '" + edad + "', '" + tipo + "')");
                 db.commit();
-                JOptionPane.showMessageDialog(this, "Usuario Registrado");
+                Object[] newrow = {usuario, nombre, contraseña, edad, tipo};
+                modelo.addRow(newrow);
+                JOptionPane.showMessageDialog(this, "Usuario Creado");
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
             db.desconectar();
         }
+
+
     }//GEN-LAST:event_jButton9MouseClicked
 
     /**
