@@ -191,6 +191,11 @@ public class JamesApp extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton5.setText("Enviar");
+        jButton5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton5MouseClicked(evt);
+            }
+        });
 
         jButton6.setText("Terminar");
         jButton6.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -411,6 +416,11 @@ public class JamesApp extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTextArea2);
 
         jButton7.setText("Enviar");
+        jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton7MouseClicked(evt);
+            }
+        });
 
         jButton8.setText("Terminar");
         jButton8.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -615,7 +625,7 @@ public class JamesApp extends javax.swing.JFrame {
                     modelo.removeAllElements();
 
                     modelo.addElement(user);
-                    
+
                     clienteChat = user;
                 }
 
@@ -623,7 +633,7 @@ public class JamesApp extends javax.swing.JFrame {
                     jFrame_Personal.pack();
                     jFrame_Personal.setLocationRelativeTo(this);
                     jFrame_Personal.setVisible(true);
-                    
+
                     personalChat = user;
                 }
             }
@@ -706,6 +716,8 @@ public class JamesApp extends javax.swing.JFrame {
             }
         }
 
+        users.add(new Usuarios(usuario, nombre, contraseña, edad, tipo));
+
         if (creado == false) {
             JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya esta en uso");
         } else {
@@ -718,6 +730,12 @@ public class JamesApp extends javax.swing.JFrame {
                 Object[] newrow = {usuario, nombre, contraseña, edad, tipo};
                 modelo.addRow(newrow);
                 JOptionPane.showMessageDialog(jFrame_Admin, "Usuario Creado");
+
+                jTextField13.setText("");
+                jTextField14.setText("");
+                jTextField15.setText("");
+                jTextField16.setText("");
+
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -749,18 +767,18 @@ public class JamesApp extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         db.desconectar();
-         modelo.setRowCount(0);
-            db.conectar();
-            try {
-                db.query.execute("select Usuario,Nombre,Contraseña,Edad,Tipo from Usuarios");
-                ResultSet rs = db.query.getResultSet();
-                while (rs.next()) {
-                    Object[] newrow = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5)};
-                    modelo.addRow(newrow);
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+        modelo.setRowCount(0);
+        db.conectar();
+        try {
+            db.query.execute("select Usuario,Nombre,Contraseña,Edad,Tipo from Usuarios");
+            ResultSet rs = db.query.getResultSet();
+            while (rs.next()) {
+                Object[] newrow = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getString(5)};
+                modelo.addRow(newrow);
             }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
         db.desconectar();
 
     }//GEN-LAST:event_jButton10MouseClicked
@@ -776,9 +794,8 @@ public class JamesApp extends javax.swing.JFrame {
         jTextField10.setText(usuario);
         jTextField8.setText(String.valueOf(edad));
         jTextField11.setText(contra);
-        
 
-        jTextArea2.append(personalChat.getUsuario()+" ha ingreado al chat");
+        jTextArea2.append(personalChat.getUsuario() + " ha ingreado al chat\n");
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void jButton8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton8MouseClicked
@@ -794,6 +811,19 @@ public class JamesApp extends javax.swing.JFrame {
         jTextField8.setText(String.valueOf(""));
         jTextField11.setText("");
     }//GEN-LAST:event_jButton6MouseClicked
+
+    private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
+        jTextArea1.append(jTextField7.getText() + "\n");
+        jTextArea2.append(personalChat.getUsuario() + ": " + jTextField7.getText() + "\n");
+        jTextField7.setText("");
+
+    }//GEN-LAST:event_jButton5MouseClicked
+
+    private void jButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseClicked
+        jTextArea2.append(jTextField12.getText() + "\n");
+        jTextArea1.append(clienteChat.getUsuario() + ": " + jTextField12.getText() + "\n");
+        jTextField12.setText("");
+    }//GEN-LAST:event_jButton7MouseClicked
 
     /**
      * @param args the command line arguments
