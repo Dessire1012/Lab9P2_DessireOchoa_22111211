@@ -101,6 +101,8 @@ public class JamesApp extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
+        jFrame_Registro.setTitle("Regsitro");
+
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel4.setText("Registro");
 
@@ -172,6 +174,8 @@ public class JamesApp extends javax.swing.JFrame {
                 .addComponent(jButton_Registrar)
                 .addGap(36, 36, 36))
         );
+
+        jFrame_Personal.setTitle("Interfaz del Personal");
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel9.setText("Interfaz Personal");
@@ -286,6 +290,8 @@ public class JamesApp extends javax.swing.JFrame {
                     .addComponent(jButton6))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
+
+        jFrame_Admin.setTitle("Administrador");
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel16.setText("Interfaz del Administrador");
@@ -407,6 +413,8 @@ public class JamesApp extends javax.swing.JFrame {
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
+        jFrame_Cliente.setTitle("Interfaz del Cliente");
+
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel15.setText("Soporte de Cliente");
 
@@ -466,6 +474,7 @@ public class JamesApp extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("LOG IN");
@@ -537,24 +546,27 @@ public class JamesApp extends javax.swing.JFrame {
 
     private void jButton_RegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton_RegistrarMouseClicked
         // REGISTRO
-        boolean registro = false;
+
         String usuario = jTextField3.getText();
         String nombre = jTextField5.getText();
         String contraseña = jTextField4.getText();
         int edad = Integer.parseInt(jTextField6.getText());
         String tipo = "Cliente";
         clienteChat = new Usuarios(usuario, nombre, contraseña, edad, tipo);
+        boolean registro = false;
 
         for (Usuarios user : users) {
-            if (!user.getUsuario().equals(usuario)) {
-                registro = true;
+            if (usuario.equals(user.getUsuario())) {
+                registro = false;
             }
+                
         }
 
         if (registro == false) {
             JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya esta en uso");
+           
         } else {
-            db.conectar();
+             db.conectar();
             try {
                 db.query.execute("INSERT INTO Usuarios"
                         + " (Usuario,Nombre,Contraseña,Edad,Tipo)"
@@ -565,11 +577,11 @@ public class JamesApp extends javax.swing.JFrame {
                 ex.printStackTrace();
             }
             db.desconectar();
+            jFrame_Cliente.pack();
+            jFrame_Cliente.setLocationRelativeTo(this);
+            jFrame_Cliente.setVisible(true);
         }
 
-        jFrame_Cliente.pack();
-        jFrame_Cliente.setLocationRelativeTo(this);
-        jFrame_Cliente.setVisible(true);
 
     }//GEN-LAST:event_jButton_RegistrarMouseClicked
 
@@ -700,19 +712,19 @@ public class JamesApp extends javax.swing.JFrame {
 
     private void jButton9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseClicked
         //GUARDAR USUARIO
-
+     
         DefaultTableModel modelo
                 = (DefaultTableModel) jTable1.getModel();
-        boolean creado = false;
         String usuario = jTextField13.getText();
         String nombre = jTextField14.getText();
         String contraseña = jTextField15.getText();
         int edad = Integer.parseInt(jTextField16.getText());
         String tipo = jComboBox3.getSelectedItem().toString();
+        boolean creado = true;
 
         for (Usuarios user : users) {
-            if (!user.getUsuario().equals(usuario)) {
-                creado = true;
+            if (usuario.equals(user.getUsuario())) {
+                creado = false;
             }
         }
 
@@ -720,6 +732,7 @@ public class JamesApp extends javax.swing.JFrame {
 
         if (creado == false) {
             JOptionPane.showMessageDialog(this, "Ese nombre de usuario ya esta en uso");
+            
         } else {
             db.conectar();
             try {
